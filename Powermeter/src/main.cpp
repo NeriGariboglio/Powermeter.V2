@@ -1,9 +1,12 @@
 #include <Arduino.h>
 #include <WiFiManager.h>
+#include <Firebase_ESP_Client.h>
+#include <ESP32Time.h>
 #include "powermeter.h"
 #include "time.h"
 #include "getRTC.hpp"
 #include "initWiFi.hpp"
+#include "firebaseP.h"
 
 Powermeter fase(A6,7.50,A7,180);
 const char* ntpServer = "pool.ntp.org";
