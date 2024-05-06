@@ -81,7 +81,71 @@ const setupUI = (user) => {
     // Database references
     var dbRef = firebase.database().ref(dbPath);
     var chartRef = firebase.database().ref(chartPath);
-    
+    // CHARTS
+    // Number of readings to plot on charts
+    var chartRange = 0;
+    // Get number of readings to plot saved on database (runs when the page first loads and whenever there's a change in the database)
+    chartRef.on('value', snapshot =>{
+      chartRange = Number(snapshot.val());
+      console.log(chartRange);
+      // Delete all data from charts to update with new values when a new range is selected
+      chartC.destroy();
+      chartV.destroy();
+      chartP.destroy();
+      // Render new charts to display new range of data
+      chartC = createCurrentChart();
+      chartV = createVoltageChart();
+      chartP = createPowerChart();
+      // Update the charts with the new range
+      // Get the latest readings and plot them on charts (the number of plotted readings corresponds to the chartRange value)
+      dbRef.orderByKey().limitToLast(chartRange).on('child_added', snapshot =>{
+        var jsonData = snapshot.toJSON();
+        // Save values on variables
+        // Llamar a las funciones plotValues para los tres gráficos
+        var current = jsonData.current;
+        var voltage = jsonData.voltage;
+        var power = jsonData.power;
+        var timestamp = jsonData.timestamp;
+        // Plot the values on the charts
+        plotValues(chartC, timestamp, current);
+        plotValues(chartV, timestamp, voltage);
+        plotValues(chartP, timestamp, power);
+      });
+    });
+
+    // Update database with new range (input field)
+    chartsRangeInputElement.onchange = () =>{
+      chartRef.set(chartsRangeInputElement.value);
+    };
+
+    //CHECKBOXES
+    // Checbox (cards for sensor readings)
+    cardsCheckboxElement.addEventListener('change', (e) =>{
+      if (cardsCheckboxElement.checked) {
+        cardsReadingsElement.style.display = 'block';
+      }
+      else{
+        cardsReadingsElement.style.display = 'none';
+      }
+    });
+    // Checbox (gauges for sensor readings)
+    gaugesCheckboxElement.addEventListener('change', (e) =>{
+      if (gaugesCheckboxElement.checked) {
+        gaugesReadingsElement.style.display = 'block';
+      }
+      else{
+        gaugesReadingsElement.style.display = 'none';
+      }
+    });
+    // Checbox (charta for sensor readings)
+    chartsCheckboxElement.addEventListener('change', (e) =>{
+      if (chartsCheckboxElement.checked) {
+        chartsDivElement.style.display = 'block';
+      }
+      else{
+        chartsDivElement.style.display = 'none';
+      }
+    });
     // CARDS
     // Obtenga las últimas lecturas y muéstrelas en tarjetas
     dbRef.orderByKey().limitToLast(1).on('child_added', snapshot =>{
@@ -108,6 +172,19 @@ const setupUI = (user) => {
       pmElement.innerHTML = powerMonth;
       updateElement.innerHTML = epochToDateTime(timestamp);
     });
+    // GAUGUE
+    // Get the latest readings and display on gauges
+    dbRef.orderByKey().limitToLast(1).on('child_added', snapshot =>{
+      var jsonData = snapshot.toJSON();
+      var power = jsonData.power;
+      var timestamp = jsonData.timestamp;
+      // Update DOM elements
+      var gaugeP= createPowerHsGauge();
+      gaugeP.draw();
+      gaugeP.value = power;
+      updateElement.innerHTML = epochToDateTime(timestamp);
+    });
+
   // IF USER IS LOGGED OUT
   } else{
     // toggle UI elements

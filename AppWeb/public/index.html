@@ -121,6 +121,45 @@
           </div>
         </div>
       </div>
+      <!--GAUGES-->
+      <div id ="gauges-div">
+        <div class="cards">
+          <!--POWER-->
+          <div class="card">
+            <canvas id="gauge-powerhs"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!--CHARTS-->
+      <div id="charts-div" style="display:none">
+        <!--SET NUMBER OF READINGS INPUT FIELD-->
+        <div>
+          <p> Número de lecturas: <input type="number" id="charts-range"></p>
+        </div>
+        <!--CURRENT-CHART-->
+        <div class="cards">
+          <div class="card">
+            <p><i class="fas fa-bolt" style="color:#059e8a;"></i> GRAFICO DE CORRIENTE</p>
+            <div id="chart-current" class="chart-container"></div>
+          </div>
+        </div>
+        <!--VOLTAGE-CHART-->
+        <div class="cards">
+          <div class="card">
+            <p><i class="fas fa-charging-station" style="color:#00add6;"></i> GRAFICO DE VOLTAGE</p>
+            <div id="chart-voltage" class="chart-container"></div>
+          </div>
+        </div>
+        <!--POWER-CHART-->
+        <div class="cards">
+          <div class="card">
+            <p><i class="fas fa-plug" style="color: #e2360f;"></i> GRAFICO DE POTENCIA</p>
+            <div id="chart-power" class="chart-container"></div>
+          </div>
+        </div>
+      </div>
+
     <!--FOOTER-->
     <div id="authentication-bar" style="display: none;">
       <div class="left">
@@ -135,11 +174,12 @@
           <a  href="https://github.com/NeriGariboglio/Powermeter.V2" target="_blank">
             <button id="proyect"><i class="fab fa-github"></i></button>
           </a>
-          
         </div>
       </div>
     </div>
     <script src="scripts/auth.js"></script>
+    <script src="scripts/charts-definition.js"></script>
+    <script src="scripts/gauges-definition.js"></script>
     <script src="scripts/index.js"></script>
   </body>
 
