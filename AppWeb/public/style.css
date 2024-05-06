@@ -1,0 +1,11 @@
+html {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    display: inline-block;
+    text-align: center;
+}
+
+body {
+    margin: 0;
+    width: 100%;
+    background-color: #f1f1f1;
+}
