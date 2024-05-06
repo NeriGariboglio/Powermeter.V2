@@ -61,7 +61,66 @@
         <p id="error-message" style="color:red;"></p>
       </div>
     </form>
+    <!--CONTENT(SENSOR READINGS)-->
+    <div class="content-sign-in" id="content-sign-in" style="display: none;">
 
+      <!--LAST UPDATE-->
+      <p><span class ="date-time">Última actualización: <span id="lastUpdate"></span></span></p>
+      <p>
+        Tarjetas: <input type="checkbox" id="cards-checkbox" name="cards-checkbox" checked>
+        Indicador: <input type="checkbox" id="gauges-checkbox" name="gauges-checkbox" checked>
+        Graficos: <input type="checkbox" id="charts-checkbox" name="charts-checkbox" unchecked>
+      </p>
+      <!--CARDS-->
+      <div id="cards-div">
+        <div class="cards">
+          <!--CURRENT-->
+          <div class="card">
+            <p><i class="fas fa-bolt" style="color:#059e8a;"></i> CORRIENTE</p>
+            <p><span class="reading"><span id="curr"></span> A</span></p>
+          </div>
+          <!--VOLTAGE-->
+          <div class="card">
+            <p><i class="fas fa-charging-station" style="color:#00add6;"></i> VOLTAGE</p>
+            <p><span class="reading"><span id="volt"></span> V</span></p>
+          </div>
+          <!--POWER FACTOR-->
+          <div class="card">
+            <p><i class="fa fa-industry" style="color:#e8b211;"></i> FACTOR DE POTENCIA</p>
+            <p><span class="reading"><span id="pow"></span></span></p>
+          </div>
+          <!--POWER HOUR CURRENT-->
+          <div class="card">
+            <p><i class="fas fa-plug" style="color:#e2360f;"></i> ACUMULADO POR HORA</p>
+            <p><span class="reading"><span id="pfc"></span>Kw/Hs</span></p>
+          </div>
+          <!--POWER DAY CURRENT-->
+          <div class="card">
+            <p><i class="fas fa-plug"  style="color:#e2360f;"></i> ACUMULADO POR DIA</p>
+            <p><span class="reading"><span id="pdc"></span>Kw</span></p>
+          </div>
+          <!--POWER MONTH CURRENT-->
+          <div class="card">
+            <p><i class="fas fa-plug" style="color:#e2360f;"></i> ACUMULADO POR MES</p>
+            <p><span class="reading"><span id="pmc"></span>Kw</span></p>
+          </div>
+          <!--POWER HOUR-->
+          <div class="card">
+            <p><i class="fa fa-history"  style="color:#28e20f;"></i> CONSUMO EN LA ULTIMA HORA</p>
+            <p><span class="reading"><span id="pf"></span>Kw/Hs</span></p>
+          </div>
+          <!--POWER DAY-->
+          <div class="card">
+            <p><i class="fa fa-history" style="color:#28e20f;"></i> CONSUMO EN EL ULTIMO DIA</p>
+            <p><span class="reading"><span id="pd"></span> Kw</span></p>
+          </div>
+          <!--POWER MONTH-->
+          <div class="card">
+            <p><i class="fa fa-history" style="color:#28e20f;"></i> CONSUMO EN EL ULTIMO MES</p>
+            <p><span class="reading"><span id="pm"></span> Kw</span></p>
+          </div>
+        </div>
+      </div>
     <!--FOOTER-->
     <div id="authentication-bar" style="display: none;">
       <div class="left">

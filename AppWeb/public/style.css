@@ -16,6 +16,26 @@ body {
     font-size: 1rem;
     padding: 5px;
 }
+
+.content {
+    padding: 20px;
+}
+
+.card {
+    background-color: white;
+    box-shadow: 2px 2px 12px 1px rgba(140,140,140,.5);
+    padding: 5%;
+}
+
+.cards {
+    max-width: 800px;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    display: grid;
+    grid-gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 2fr));
+}
+
 .left{
     display:flex;
     align-items:center;
@@ -35,4 +55,15 @@ body {
 .fa-github{
     color: #193036;
     font-size: 30px;
+}
+#proyect{
+    margin: 0%;
+    background-color: transparent;
+}
+#logout-link{
+    border: none;
+    background-color:#c52c2c;
+}
+#user-details{
+    color: cadetblue;
 }

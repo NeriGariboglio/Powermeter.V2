@@ -82,6 +82,32 @@ const setupUI = (user) => {
     var dbRef = firebase.database().ref(dbPath);
     var chartRef = firebase.database().ref(chartPath);
     
+    // CARDS
+    // Obtenga las últimas lecturas y muéstrelas en tarjetas
+    dbRef.orderByKey().limitToLast(1).on('child_added', snapshot =>{
+      var jsonData = snapshot.toJSON();
+      var current = jsonData.current;
+      var voltage = jsonData.voltage;
+      var powerFactor = jsonData.powerFactor;
+      var powerHourCurrent = jsonData.powerHourCurrent;
+      var powerDayCurrent = jsonData.powerDayCurrent;
+      var powerMonthCurrent = jsonData.powerMonthCurrent;
+      var powerHour = jsonData.powerHour;
+      var powerDay = jsonData.powerDay;
+      var powerMonth = jsonData.powerMonth;
+      var timestamp = jsonData.timestamp;
+      // Actualiza los elementos DOM
+      currElement.innerHTML = current;
+      voltElement.innerHTML = voltage;
+      powElement.innerHTML = powerFactor;
+      pfcElement.innerHTML = powerHourCurrent;
+      pdcElement.innerHTML = powerDayCurrent;
+      pmcElement.innerHTML = powerMonthCurrent;
+      pfElement.innerHTML = powerHour;
+      pdElement.innerHTML = powerDay;
+      pmElement.innerHTML = powerMonth;
+      updateElement.innerHTML = epochToDateTime(timestamp);
+    });
   // IF USER IS LOGGED OUT
   } else{
     // toggle UI elements
