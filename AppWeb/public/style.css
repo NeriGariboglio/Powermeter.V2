@@ -9,3 +9,30 @@ body {
     width: 100%;
     background-color: #f1f1f1;
 }
+.topnav {
+    overflow: hidden;
+    background-color: #6ab187;
+    color: white;
+    font-size: 1rem;
+    padding: 5px;
+}
+.left{
+    display:flex;
+    align-items:center;
+    background-color:#dadada;
+    justify-content:space-between;
+}
+.center{ 
+    text-align:center;
+}
+.logout{
+    width:20%;
+    background-color:#c52c2c;
+}
+.right{
+    width:20%;
+}
+.fa-github{
+    color: #193036;
+    font-size: 30px;
+}
