@@ -44,10 +44,12 @@
   </head>
 
   <body>
+   
     <!--TOP BAR-->
     <div class="topnav">
       <h1>Medidor de Energia  <i class="fas fa-tachometer-alt"></i></h1>
     </div>
+
     <!--LOGIN FORM-->
     <form id="login-form" style="display: none;">
       <div class="form-elements-container">
@@ -61,7 +63,8 @@
         <p id="error-message" style="color:red;"></p>
       </div>
     </form>
-    <!--CONTENT(SENSOR READINGS)-->
+
+    <!--CONTENT (SENSOR READINGS)-->
     <div class="content-sign-in" id="content-sign-in" style="display: none;">
 
       <!--LAST UPDATE-->
@@ -159,46 +162,48 @@
           </div>
         </div>
       </div>
-      < <!--BUTTONS TO HANDLE DATA-->
-      <p>
-        <!--View data button-->
-        <button id="view-data-button">Ver todos los datos</button>
-        <!--Hide data button-->
-        <button id="hide-data-button" style= "display:none;">Ocultar datos</button>
-        <!--Delete data button-->
-        <button id="delete-button" class="deletebtn">Eliminar datos</button>
-      </p>
-      <!--Modal to delete data-->
-      <div id="delete-modal" class="modal" sytle="display:none">
-        <span onclick = "document.getElementById('delete-modal').style.display='none'" class="close" title="Close Modal">×</span>
-        <form id= "delete-data-form" class="modal-content" action="/">
-          <div class="container">
-            <h1>Eliminar datos</h1>
-            <p>Está seguro de que desea eliminar todos los datos de la base de datos?</p>
-            <div class="clearfix">
-              <button type="button" onclick="document.getElementById('delete-modal').style.display='none'" class="cancelbtn">Cancelar</button>
-              <button type="submit" onclick="document.getElementById('delete-modal').style.display='none'" class="deletebtn">Eliminar</button>
-            </div>
+
+    <!--BUTTONS TO HANDLE DATA-->
+    <p>
+      <!--View data button-->
+      <button id="view-data-button">Ver todos los datos</button>
+      <!--Hide data button-->
+      <button id="hide-data-button" style= "display:none;">Ocultar datos</button>
+      <!--Delete data button-->
+      <button id="delete-button" class="deletebtn">Eliminar datos</button>
+    </p>
+    <!--Modal to delete data-->
+    <div id="delete-modal" class="modal" sytle="display:none">
+      <span onclick = "document.getElementById('delete-modal').style.display='none'" class="close" title="Close Modal">×</span>
+      <form id= "delete-data-form" class="modal-content" action="/">
+        <div class="container">
+          <h1>Eliminar datos</h1>
+          <p>Está seguro de que desea eliminar todos los datos de la base de datos?</p>
+          <div class="clearfix">
+            <button type="button" onclick="document.getElementById('delete-modal').style.display='none'" class="cancelbtn">Cancelar</button>
+            <button type="submit" onclick="document.getElementById('delete-modal').style.display='none'" class="deletebtn">Eliminar</button>
           </div>
-        </form>
-      </div>
-  
-      <!--TABLE WITH ALL DATA-->
-      <div class ="cards">
-        <div class="card" id="table-container" style= "display:none;">
-          <table id="readings-table">
-              <tr id="theader">
-                <th>Tiempo</th>
-                <th>Corriente (A)</th>
-                <th>Voltage (V)</th>
-                <th>Potencia (W)</th>
-              </tr>
-              <tbody id="tbody">
-              </tbody>
-          </table>
-          <p><button id="load-data" style= "display:none;">Mas resultados...</button></p>
         </div>
-      </div>>
+      </form>
+    </div>
+
+    <!--TABLE WITH ALL DATA-->
+    <div class ="cards">
+      <div class="card" id="table-container" style= "display:none;">
+        <table id="readings-table">
+            <tr id="theader">
+              <th>Tiempo</th>
+              <th>Corriente (A)</th>
+              <th>Voltage (V)</th>
+              <th>Potencia (W)</th>
+            </tr>
+            <tbody id="tbody">
+            </tbody>
+        </table>
+        <p><button id="load-data" style= "display:none;">Mas resultados...</button></p>
+      </div>
+    </div>
+
     <!--FOOTER-->
     <div id="authentication-bar" style="display: none;">
       <div class="left">
