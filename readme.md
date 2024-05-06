@@ -32,19 +32,19 @@ En la carpeta [Powermeter](https://github.com/NeriGariboglio/Powermeter.V2/tree/
 - ### App-Web
     - #### Iniciar sesión
         Se debe iniciar sesión con los usuarios registrados en firebase en el apartado de autenticación.
-    ![1](.git/images/1.PNG)
+    ![1](images/1.PNG)
     - #### Tarjetas
         Al ingresar se visualizara una página como la siguiente donde podremos marcar en los checkbox los elementos que queremos visualizar. Por otro lado en la parte inferior tendremos un detalle del usuario logueado, asi como tambien, un enlace a este repositorio y el respectivo botón de cierre de sesión.
-    ![2](.git/images/2.PNG)
+    ![2](images/2.PNG)
     - #### Tacometro indicador
         Este tacometro indica la potencia intantanea en watts
-    ![3](.git/images/3.PNG)
+    ![3](images/3.PNG)
     - #### Graficos
         En este apartado se visualiza la corriente, tensión y potencia intantanea con una estampa de tiempo para cada valor registrado. Cabe aclarar que dichos valores cambian cada un minuto.
-    ![4](.git/images/4.PNG)
+    ![4](images/4.PNG)
     - #### Historial de valores
         Si pulsamos el botón de mostrar datos se desplegara una tabla donde podemos ver los valores de corriente, tensión y potencia obtenidos a lo largo del tiempo.
-    ![5](.git/images/5.PNG)
+    ![5](images/5.PNG)
 ## Mejoras a implementar
 - #### Calibración de sensores desde la AppWeb
 - #### Cálculo de precio a pagar por consumo mensual
