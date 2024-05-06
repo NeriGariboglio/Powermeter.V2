@@ -81,6 +81,7 @@ const setupUI = (user) => {
     // Database references
     var dbRef = firebase.database().ref(dbPath);
     var chartRef = firebase.database().ref(chartPath);
+    
     // CHARTS
     // Number of readings to plot on charts
     var chartRange = 0;
@@ -146,6 +147,7 @@ const setupUI = (user) => {
         chartsDivElement.style.display = 'none';
       }
     });
+
     // CARDS
     // Obtenga las últimas lecturas y muéstrelas en tarjetas
     dbRef.orderByKey().limitToLast(1).on('child_added', snapshot =>{
@@ -172,6 +174,7 @@ const setupUI = (user) => {
       pmElement.innerHTML = powerMonth;
       updateElement.innerHTML = epochToDateTime(timestamp);
     });
+
     // GAUGUE
     // Get the latest readings and display on gauges
     dbRef.orderByKey().limitToLast(1).on('child_added', snapshot =>{
@@ -183,6 +186,111 @@ const setupUI = (user) => {
       gaugeP.draw();
       gaugeP.value = power;
       updateElement.innerHTML = epochToDateTime(timestamp);
+    });
+
+    // DELETE DATA
+    // Add event listener to open modal when click on "Delete Data" button
+    deleteButtonElement.addEventListener('click', e =>{
+      console.log("Remove data");
+      e.preventDefault;
+      deleteModalElement.style.display="block";
+    });
+
+    // Add event listener when delete form is submited
+    deleteDataFormElement.addEventListener('submit', (e) => {
+      // delete data (readings)
+      dbRef.remove();
+    });
+
+    // TABLE
+    var lastReadingTimestamp; //guarda la última marca de tiempo mostrada en la tabla
+    // Función que crea la tabla con las primeras 100 lecturas
+    function createTable(){
+      // agregar todos los datos a la tabla
+      var firstRun = true;
+      dbRef.orderByKey().limitToLast(100).on('child_added', function(snapshot) {
+        if (snapshot.exists()) {
+          var jsonData = snapshot.toJSON();
+          console.log(jsonData);
+          var current = jsonData.current;
+          var voltage = jsonData.voltage;
+          var power = jsonData.power;
+          var timestamp = jsonData.timestamp;
+          var content = '';
+          content += '<tr>';
+          content += '<td>' + epochToDateTime(timestamp) + '</td>';
+          content += '<td>' + current + '</td>';
+          content += '<td>' + voltage + '</td>';
+          content += '<td>' + power + '</td>';
+          content += '</tr>';
+          $('#tbody').prepend(content);
+          // Guardar lastReadingTimestamp --> corresponde a la primera marca de tiempo en los datos de la instantánea devuelta
+          if (firstRun){
+            lastReadingTimestamp = timestamp;
+            firstRun=false;
+            console.log(lastReadingTimestamp);
+          }
+        }
+      });
+    };
+
+    // agregar lecturas a la tabla (después de presionar el botón Más resultados...)
+    function appendToTable(){
+      var dataList = []; // guarda la lista de lecturas devueltas por la instantánea (más antigua-->más nueva)
+      var reversedList = []; // Igual que el anterior, pero invertido (más nuevo--> más antiguo)
+      console.log("APEND");
+      dbRef.orderByKey().limitToLast(100).endAt(lastReadingTimestamp).once('value', function(snapshot) {
+        // convertir la instantánea a JSON
+        if (snapshot.exists()) {
+          snapshot.forEach(element => {
+            var jsonData = element.toJSON();
+            dataList.push(jsonData); // crear una lista con todos los datos
+          });
+          lastReadingTimestamp = dataList[0].timestamp; //la marca de tiempo más antigua corresponde a la primera en la lista (más antigua -> más nueva)
+          reversedList = dataList.reverse(); // invertir el orden de la lista (datos más recientes --> datos más antiguos)
+
+          var firstTime = true;
+          // recorrer todos los elementos de la lista y agregarlos a la tabla (los elementos más nuevos primero)
+          reversedList.forEach(element =>{
+            if (firstTime){ // ignorar la primera lectura (ya está en la mesa de la consulta anterior)
+              firstTime = false;
+            }
+            else{
+              var current = element.current;
+              var voltage = element.voltage;
+              var power = element.power;
+              var timestamp = element.timestamp;
+              var content = '';
+              content += '<tr>';
+              content += '<td>' + epochToDateTime(timestamp) + '</td>';
+              content += '<td>' + current + '</td>';
+              content += '<td>' + voltage + '</td>';
+              content += '<td>' + power + '</td>';
+              content += '</tr>';
+              $('#tbody').append(content);
+            }
+          });
+        }
+      });
+    }
+
+    viewDataButtonElement.addEventListener('click', (e) =>{
+      // Toggle DOM elements
+      tableContainerElement.style.display = 'block';
+      viewDataButtonElement.style.display ='none';
+      hideDataButtonElement.style.display ='inline-block';
+      loadDataButtonElement.style.display = 'inline-block'
+      createTable();
+    });
+
+    loadDataButtonElement.addEventListener('click', (e) => {
+      appendToTable();
+    });
+
+    hideDataButtonElement.addEventListener('click', (e) => {
+      tableContainerElement.style.display = 'none';
+      viewDataButtonElement.style.display = 'inline-block';
+      hideDataButtonElement.style.display = 'none';
     });
 
   // IF USER IS LOGGED OUT
