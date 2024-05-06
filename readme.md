@@ -27,6 +27,30 @@ En la carpeta [Powermeter](https://github.com/NeriGariboglio/Powermeter.V2/tree/
 - ### Consumo por Hora-Día-Mes
     Se utilizo la libreria [time](https://www.arduinolibraries.info/libraries/esp32-time) que hace uso del RTC interno de nuestro ESP y nos brinda metodos para determinar los datos de fecha como hora, dia y mes. Dicho valor se sincroniza con un servidor ntp al momento de encender nuestro ESP.
 ## AppWeb-Firebase 
+- ### Confiruar Firebase
+    Para la configuración de Firebase se siguio el siguiente [Tutorial](https://randomnerdtutorials.com/esp32-data-logging-firebase-realtime-database/#Set-up-Realtime-Database) donde se explica detalladamente los pasos a seguir.
+- ### App-Web
+    - #### Iniciar sesión
+        Se debe iniciar sesión con los usuarios registrados en firebase en el apartado de autenticación.
+    ![1](.git/images/1.PNG)
+    - #### Tarjetas
+        Al ingresar se visualizara una página como la siguiente donde podremos marcar en los checkbox los elementos que queremos visualizar. Por otro lado en la parte inferior tendremos un detalle del usuario logueado, asi como tambien, un enlace a este repositorio y el respectivo botón de cierre de sesión.
+    ![2](.git/images/2.PNG)
+    - #### Tacometro indicador
+        Este tacometro indica la potencia intantanea en watts
+    ![3](.git/images/3.PNG)
+    - #### Graficos
+        En este apartado se visualiza la corriente, tensión y potencia intantanea con una estampa de tiempo para cada valor registrado. Cabe aclarar que dichos valores cambian cada un minuto.
+    ![4](.git/images/4.PNG)
+    - #### Historial de valores
+        Si pulsamos el botón de mostrar datos se desplegara una tabla donde podemos ver los valores de corriente, tensión y potencia obtenidos a lo largo del tiempo.
+    ![5](.git/images/5.PNG)
+## Mejoras a implementar
+- #### Calibración de sensores desde la AppWeb
+- #### Cálculo de precio a pagar por consumo mensual
+- #### Predicción de consumos
+- #### Mejorar mantenimiento de base de datos
+- #### Mejorar la dinamica de la AppWeb a fin de aumentar los tiempos de respuesta y disminuir bugs
 
 ## Documentacion
 
