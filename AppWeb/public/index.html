@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Medidor de Energia</title>
+
+    <!-- include Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+
+    <!-- include only the Firebase features as you need -->
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-database.js"></script>
+
+    <script>
+      // Replace with your app config object
+      const firebaseConfig = {
+        apiKey: "AIzaSyApTTyO6HAivzvcYs0ILDye2uQRZbQJZGM",
+        authDomain: "powermeteresp32.firebaseapp.com",
+        databaseURL: "https://powermeteresp32-default-rtdb.firebaseio.com",
+        projectId: "powermeteresp32",
+        storageBucket: "powermeteresp32.appspot.com",
+        messagingSenderId: "664237129493",
+        appId: "1:664237129493:web:b8af3be145d56ca386b31c"
+      };
+
+      // Initialize firebase
+      firebase.initializeApp(firebaseConfig);
+
+      // Make auth and database references
+      const auth = firebase.auth();
+      const db = firebase.database();
+
+    </script>
+    <!-- Librerias-->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <script src="https://cdn.rawgit.com/Mikhus/canvas-gauges/gh-pages/download/2.1.7/all/gauge.min.js"></script>
+    <!-- Referencias -->
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+  </head>
+
+  <body>
+   
+    <!--TOP BAR-->
+    <div class="topnav">
+      <h1>Medidor de Energia  <i class="fas fa-tachometer-alt"></i></h1>
+    </div>
+
+    <!--LOGIN FORM-->
+    <form id="login-form" style="display: none;">
+      <div class="form-elements-container">
+        <label for="input-email"><b>Email</b></label>
+        <input type="text" placeholder="Enter Username" id="input-email" required>
+
+        <label for="input-password"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" id="input-password" required>
+
+        <button type="submit" id="login-button">Iniciar sesión</button>
+        <p id="error-message" style="color:red;"></p>
+      </div>
+    </form>
+
+    <!--CONTENT (SENSOR READINGS)-->
+    <div class="content-sign-in" id="content-sign-in" style="display: none;">
+
+      <!--LAST UPDATE-->
+      <p><span class ="date-time">Última actualización: <span id="lastUpdate"></span></span></p>
+      <p>
+        Tarjetas: <input type="checkbox" id="cards-checkbox" name="cards-checkbox" checked>
+        Indicador: <input type="checkbox" id="gauges-checkbox" name="gauges-checkbox" checked>
+        Graficos: <input type="checkbox" id="charts-checkbox" name="charts-checkbox" unchecked>
+      </p>
+      <!--CARDS-->
+      <div id="cards-div">
+        <div class="cards">
+          <!--CURRENT-->
+          <div class="card">
+            <p><i class="fas fa-bolt" style="color:#059e8a;"></i> CORRIENTE</p>
+            <p><span class="reading"><span id="curr"></span> A</span></p>
+          </div>
+          <!--VOLTAGE-->
+          <div class="card">
+            <p><i class="fas fa-charging-station" style="color:#00add6;"></i> VOLTAGE</p>
+            <p><span class="reading"><span id="volt"></span> V</span></p>
+          </div>
+          <!--POWER FACTOR-->
+          <div class="card">
+            <p><i class="fa fa-industry" style="color:#e8b211;"></i> FACTOR DE POTENCIA</p>
+            <p><span class="reading"><span id="pow"></span></span></p>
+          </div>
+          <!--POWER HOUR CURRENT-->
+          <div class="card">
+            <p><i class="fas fa-plug" style="color:#e2360f;"></i> ACUMULADO POR HORA</p>
+            <p><span class="reading"><span id="pfc"></span>Kw/Hs</span></p>
+          </div>
+          <!--POWER DAY CURRENT-->
+          <div class="card">
+            <p><i class="fas fa-plug"  style="color:#e2360f;"></i> ACUMULADO POR DIA</p>
+            <p><span class="reading"><span id="pdc"></span>Kw</span></p>
+          </div>
+          <!--POWER MONTH CURRENT-->
+          <div class="card">
+            <p><i class="fas fa-plug" style="color:#e2360f;"></i> ACUMULADO POR MES</p>
+            <p><span class="reading"><span id="pmc"></span>Kw</span></p>
+          </div>
+          <!--POWER HOUR-->
+          <div class="card">
+            <p><i class="fa fa-history"  style="color:#28e20f;"></i> CONSUMO EN LA ULTIMA HORA</p>
+            <p><span class="reading"><span id="pf"></span>Kw/Hs</span></p>
+          </div>
+          <!--POWER DAY-->
+          <div class="card">
+            <p><i class="fa fa-history" style="color:#28e20f;"></i> CONSUMO EN EL ULTIMO DIA</p>
+            <p><span class="reading"><span id="pd"></span> Kw</span></p>
+          </div>
+          <!--POWER MONTH-->
+          <div class="card">
+            <p><i class="fa fa-history" style="color:#28e20f;"></i> CONSUMO EN EL ULTIMO MES</p>
+            <p><span class="reading"><span id="pm"></span> Kw</span></p>
+          </div>
+        </div>
+      </div>
+      <!--GAUGES-->
+      <div id ="gauges-div">
+        <div class="cards">
+          <!--POWER-->
+          <div class="card">
+            <canvas id="gauge-powerhs"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!--CHARTS-->
+      <div id="charts-div" style="display:none">
+        <!--SET NUMBER OF READINGS INPUT FIELD-->
+        <div>
+          <p> Número de lecturas: <input type="number" id="charts-range"></p>
+        </div>
+        <!--CURRENT-CHART-->
+        <div class="cards">
+          <div class="card">
+            <p><i class="fas fa-bolt" style="color:#059e8a;"></i> GRAFICO DE CORRIENTE</p>
+            <div id="chart-current" class="chart-container"></div>
+          </div>
+        </div>
+        <!--VOLTAGE-CHART-->
+        <div class="cards">
+          <div class="card">
+            <p><i class="fas fa-charging-station" style="color:#00add6;"></i> GRAFICO DE VOLTAGE</p>
+            <div id="chart-voltage" class="chart-container"></div>
+          </div>
+        </div>
+        <!--POWER-CHART-->
+        <div class="cards">
+          <div class="card">
+            <p><i class="fas fa-plug" style="color: #e2360f;"></i> GRAFICO DE POTENCIA</p>
+            <div id="chart-power" class="chart-container"></div>
+          </div>
+        </div>
+      </div>
+
+    <!--BUTTONS TO HANDLE DATA-->
+    <p>
+      <!--View data button-->
+      <button id="view-data-button">Ver todos los datos</button>
+      <!--Hide data button-->
+      <button id="hide-data-button" style= "display:none;">Ocultar datos</button>
+      <!--Delete data button-->
+      <button id="delete-button" class="deletebtn">Eliminar datos</button>
+    </p>
+    <!--Modal to delete data-->
+    <div id="delete-modal" class="modal" sytle="display:none">
+      <span onclick = "document.getElementById('delete-modal').style.display='none'" class="close" title="Close Modal">×</span>
+      <form id= "delete-data-form" class="modal-content" action="/">
+        <div class="container">
+          <h1>Eliminar datos</h1>
+          <p>Está seguro de que desea eliminar todos los datos de la base de datos?</p>
+          <div class="clearfix">
+            <button type="button" onclick="document.getElementById('delete-modal').style.display='none'" class="cancelbtn">Cancelar</button>
+            <button type="submit" onclick="document.getElementById('delete-modal').style.display='none'" class="deletebtn">Eliminar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!--TABLE WITH ALL DATA-->
+    <div class ="cards">
+      <div class="card" id="table-container" style= "display:none;">
+        <table id="readings-table">
+            <tr id="theader">
+              <th>Tiempo</th>
+              <th>Corriente (A)</th>
+              <th>Voltage (V)</th>
+              <th>Potencia (W)</th>
+            </tr>
+            <tbody id="tbody">
+            </tbody>
+        </table>
+        <p><button id="load-data" style= "display:none;">Mas resultados...</button></p>
+      </div>
+    </div>
+
+    <!--FOOTER-->
+    <div id="authentication-bar" style="display: none;">
+      <div class="left">
+        <div class=logout>
+          <button id="logout-link" href="/"><i class="fas fa-unlock-alt"></i>  Cerrar Sesión</button>
+        </div>
+        <div class="center">
+            <span id="authentication-status">Usuario registrado:</span>
+            <span id="user-details">USEREMAIL</span>
+        </div>
+        <div class="right">
+          <a  href="https://github.com/NeriGariboglio/Powermeter.V2" target="_blank">
+            <button id="proyect"><i class="fab fa-github"></i></button>
+          </a>
+        </div>
+      </div>
+    </div>
+    <script src="scripts/auth.js"></script>
+    <script src="scripts/charts-definition.js"></script>
+    <script src="scripts/gauges-definition.js"></script>
+    <script src="scripts/index.js"></script>
+  </body>
+
+</html>
